@@ -25,5 +25,5 @@ jira.user=
 jira.password=
 
 # List of project to show. Project keys separated by comma as such :
-#  jira.projects.key.accept=PROJ1, PROJ2)
+# jira.projects.key.accept=PROJ1, PROJ2
 jira.projects.key.accept=
