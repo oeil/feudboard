@@ -23,8 +23,10 @@
                                     <h4 class="panel-title roadmap">
                                         <#if issue.fields.issuetype.name=="Story">
                                             <i class="fa fa-star feature" aria-hidden="true"></i>
-                                        <#elseif issue.fields.issuetype.name=="Bug">
+                                        <#elseif issue.fields.issuetype.name?contains("Bug")>
                                             <i class="fa fa-bug bug" aria-hidden="true"></i>
+                                        <#else>
+                                            <i class="fa fa-star-o feature" aria-hidden="true"></i>
                                         </#if>
 
                                         <a role="button" data-toggle="collapse" data-parent="#accordion-story" href="#collapse${issue.key}" aria-expanded="true" aria-controls="collapse${issue.key}" <#if issue.fields.status?? && issue.fields.status.statusCategory.key == 'done'>class="done"</#if>>

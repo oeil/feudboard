@@ -24,6 +24,9 @@ jira.domain.url=https://jira.atlassian.com
 jira.user=
 jira.password=
 
-# List of project to show. Project keys separated by comma as such :
+# List of JIRA project(s) to show. Project keys separated by comma (,)
 # jira.projects.key.accept=PROJ1, PROJ2
 jira.projects.key.accept=
+
+# List of JIRA issue types to show. Issue types separated by comma (,)
+jira.issues.type.accept=bug, story, improvement, new feature, task

@@ -54,4 +54,8 @@ public interface Configuration {
     @Config("jira.projects.key.accept")
     @Default("")
     List<String> getJiraProjectsKeyAccept();
+
+    @Config("jira.issues.type.accept")
+    @Default("bug, story, improvement, feature, task")
+    List<String> getJiraIssuesTypeAccept();
 }

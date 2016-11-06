@@ -22,6 +22,7 @@ import org.teknux.feudboard.config.app.Configuration;
 import org.teknux.feudboard.exception.ServiceException;
 import org.teknux.feudboard.service.IServiceManager;
 import org.teknux.feudboard.service.configuration.IConfigurationService;
+import org.teknux.feudboard.util.JqlBuilder;
 import org.teknux.feudboard.ws.Ws;
 import org.teknux.feudboard.ws.model.IssuesSearch;
 import org.teknux.feudboard.ws.model.JqlSearch;
@@ -30,6 +31,7 @@ import org.teknux.feudboard.ws.model.Version;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -39,6 +41,7 @@ import java.util.List;
 public class WsServiceImpl implements IWsService {
 
     private Ws ws;
+    private List<String> issueTypes;
 
     @Override
     public void start(IServiceManager serviceManager) throws ServiceException {
@@ -46,20 +49,29 @@ public class WsServiceImpl implements IWsService {
         final String jiraUrl = configuration.getJiraDomainUrl();
 
         final String apiUrl = MessageFormat.format("{0}/rest/api/2/", jiraUrl);
+        final String user = configuration.getJiraUser();
+        final String pwd = configuration.getJiraPassword();
+
         final Ws.IWsCredentials credentials = new Ws.IWsCredentials() {
 
             @Override
             public String getUser() {
-                return configuration.getJiraUser();
+                return user;
             }
 
             @Override
             public String getPassword() {
-                return configuration.getJiraPassword();
+                return pwd;
             }
         };
 
-        this.ws = new Ws(apiUrl, credentials);
+        if (user.isEmpty() && pwd.isEmpty()) {
+            this.ws = new Ws(apiUrl);
+        } else {
+            this.ws = new Ws(apiUrl, credentials);
+        }
+
+        this.issueTypes = configuration.getJiraIssuesTypeAccept();
     }
 
     @Override
@@ -70,10 +82,17 @@ public class WsServiceImpl implements IWsService {
     @Override
     public Ws.Result<IssuesSearch> issuesByRelease(final String project, final String release) {
         JqlSearch jqlSearchQuery = new JqlSearch();
-        jqlSearchQuery.jql = MessageFormat.format("project={0} AND (type=bug OR type=story) AND fixVersion=''{1}''", project, release);
+
+        jqlSearchQuery.jql = JqlBuilder.get()
+                .project(project)
+                .fixVersion(release)
+                .issueTypes(this.issueTypes)
+                .build();
+
         jqlSearchQuery.fields = Arrays.asList(new String[] { "key", "summary", "description", "components", "issuetype", "status" });
         jqlSearchQuery.maxResults = 9999;
 
+        System.out.println(jqlSearchQuery.jql);
         return ws.doPost("search", jqlSearchQuery, IssuesSearch.class);
     }
 
