@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 TekNux.org
+  ~
+  ~ This file is part of the feudboard GPL Source Code.
+  ~
+  ~ feudboard Source Code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ feudboard Source Code is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with dropbitz Community Source Code.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="dropbitz" version="3.0">
+   
+	<filter>
+		<filter-name>default</filter-name>
+		<filter-class>org.teknux.feudboard.AppServlet</filter-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>org.teknux.feudboard.controller;org.teknux.feudboard.provider</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jersey.config.server.provider.classnames</param-name>
+			<param-value>org.teknux.feudboard.provider.AuthenticationFilter,org.glassfish.jersey.jackson.JacksonFeature,org.glassfish.jersey.server.mvc.freemarker.FreemarkerMvcFeature</param-value>
+		</init-param>
+		<init-param>
+		    <param-name>jersey.config.server.mvc.templateBasePath.freemarker</param-name>
+		    <param-value>/views</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jersey.config.servlet.filter.staticContentRegex</param-name>
+			<param-value>/static/.*</param-value>
+		</init-param>
+        <init-param>
+            <param-name>jersey.config.server.mvc.factory.freemarker</param-name>
+            <param-value>org.teknux.feudboard.freemarker.FreemarkerConfig</param-value>
+        </init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>default</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-app>

@@ -1,0 +1,95 @@
+/*
+ * Copyright (C) 2016 TekNux.org
+ *
+ * This file is part of the feudboard GPL Source Code.
+ *
+ * feudboard Source Code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * feudboard Source Code is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with dropbitz Community Source Code.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@font-face {
+  font-family: "Orbitron";
+  src: url("../fonts/Orbitron-Regular.ttf") format("truetype");
+}
+
+a {
+    color: #05CFC7;
+}
+
+a:hover,
+a:focus {
+    color: #07C0B9;
+}
+
+a.brand {
+    vertical-align: middle;
+}
+
+.btn-primary {
+    background-color: #05CFC7;
+    border-color: #07C0B9;
+}
+
+.brand-font {
+    font-family: "Orbitron", serif;
+}
+
+/***********************/
+/*        Global       */
+/***********************/
+
+html, body {
+	height: 100%;
+	margin: 0 auto;
+	width: 100%;
+	min-height: 100%;
+	/*background-color: #2A718D;*/
+}
+
+.spacer {
+	clear: both;
+}
+
+.hidden {
+	display: none;
+}
+
+/*****************/
+/* Sticky footer */
+/*****************/
+
+
+/* Wrapper for page content to push down footer */
+.wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+}
+
+#push {
+	height: 60px;
+}
+
+footer {
+    color: aliceblue;
+    padding-top:20px;
+    padding-bottom:20px;
+    background-color:#857fa7;
+    height: 60px;
+}
+
+/* PANEL */
+.control-group {
+    margin-bottom: 10px;
+}

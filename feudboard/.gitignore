@@ -1,0 +1,9 @@
+/target
+/logs
+/.classpath
+/.project
+/.settings
+/.idea/
+/dropbitz.iml
+/config
+/src/main/resources/config.properties
