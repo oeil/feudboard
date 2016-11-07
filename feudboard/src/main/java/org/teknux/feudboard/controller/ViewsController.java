@@ -20,6 +20,7 @@ package org.teknux.feudboard.controller;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.teknux.feudboard.controller.constant.Route;
 import org.teknux.feudboard.freemarker.View;
 import org.teknux.feudboard.model.Message;
 import org.teknux.feudboard.model.view.ProjectsModel;
@@ -37,6 +38,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +52,8 @@ import java.util.stream.Collectors;
 public class ViewsController extends AbstractController {
 
     @GET
-    public Viewable index() {
-        return null;
+    public Response index() throws URISyntaxException {
+        return Response.seeOther(uri(Route.PROJECTS)).build();
     }
 
     @GET
