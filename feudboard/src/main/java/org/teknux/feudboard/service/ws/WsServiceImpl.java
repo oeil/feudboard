@@ -19,7 +19,7 @@
 package org.teknux.feudboard.service.ws;
 
 import org.teknux.feudboard.config.app.Configuration;
-import org.teknux.feudboard.exception.ServiceException;
+import org.teknux.feudboard.service.ServiceException;
 import org.teknux.feudboard.service.IServiceManager;
 import org.teknux.feudboard.service.configuration.IConfigurationService;
 import org.teknux.feudboard.util.JqlBuilder;
@@ -31,7 +31,6 @@ import org.teknux.feudboard.ws.model.Version;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 

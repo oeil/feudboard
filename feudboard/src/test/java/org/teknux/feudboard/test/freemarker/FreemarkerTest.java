@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.teknux.feudboard.freemarker.FreemarkerConfig;
-import org.teknux.feudboard.exception.ServiceException;
+import org.teknux.feudboard.service.ServiceException;
 import org.teknux.feudboard.model.view.IModel;
 import org.teknux.feudboard.model.view.Model;
 

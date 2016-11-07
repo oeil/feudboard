@@ -18,9 +18,6 @@
 
 package org.teknux.feudboard.service;
 
-import org.teknux.feudboard.exception.ServiceException;
-
-
 public interface IService {
 
 	void start(final IServiceManager serviceManager) throws ServiceException;

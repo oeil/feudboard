@@ -16,7 +16,10 @@
  * along with dropbitz Community Source Code.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.teknux.feudboard.exception;
+package org.teknux.feudboard.service;
+
+import org.teknux.feudboard.exception.AppException;
+
 
 public class ServiceException extends AppException {
 

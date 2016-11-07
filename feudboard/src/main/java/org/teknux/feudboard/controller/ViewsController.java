@@ -99,6 +99,7 @@ public class ViewsController extends AbstractController {
         logger.trace("GET /projects/{}/versions/{}", key, version);
 
         final Ws.Result<IssuesSearch> result = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
+
         final View view = View.ROADMAP;
         return isWsError(result) ? viewable(view, new RoadmapModel()) : viewable(view, new RoadmapModel(version, result.getObject()));
     }

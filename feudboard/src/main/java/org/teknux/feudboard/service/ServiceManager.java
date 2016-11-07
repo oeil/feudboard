@@ -21,7 +21,6 @@ package org.teknux.feudboard.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.teknux.feudboard.AppServlet;
-import org.teknux.feudboard.exception.ServiceException;
 import org.teknux.feudboard.service.configuration.ConfigurationServiceImpl;
 import org.teknux.feudboard.service.configuration.IConfigurationService;
 import org.teknux.feudboard.service.ws.IWsService;

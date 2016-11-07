@@ -21,7 +21,7 @@ package org.teknux.feudboard;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.teknux.feudboard.exception.ServiceException;
+import org.teknux.feudboard.service.ServiceException;
 import org.teknux.feudboard.service.ServiceManager;
 
 import javax.servlet.FilterConfig;
