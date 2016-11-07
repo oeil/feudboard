@@ -20,6 +20,8 @@ package org.teknux.feudboard.controller;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teknux.feudboard.controller.constant.Route;
 import org.teknux.feudboard.freemarker.View;
 import org.teknux.feudboard.model.Message;
@@ -52,6 +54,8 @@ import java.util.stream.Collectors;
 @Produces({ MediaType.TEXT_HTML })
 public class ViewsController extends AbstractController {
 
+    private static Logger logger = LoggerFactory.getLogger(ViewsController.class);
+
     @GET
     public Response index() throws URISyntaxException {
         return Response.seeOther(uri(Route.PROJECTS)).build();
@@ -60,6 +64,8 @@ public class ViewsController extends AbstractController {
     @GET
     @Path("projects")
     public Viewable projects() {
+        logger.trace("GET /projects");
+
         final Ws.Result<List<Project>> result = getServiceManager().getService(IWsService.class).projects();
         final View view = View.PROJECTS;
         if (!isWsError(result)) {
@@ -80,6 +86,8 @@ public class ViewsController extends AbstractController {
     @GET
     @Path("projects/{key}/versions")
     public Viewable versions(@PathParam("key") String key) {
+        logger.trace("GET /projects/{}/versions", key);
+
         final Ws.Result<List<Version>> result = getServiceManager().getService(IWsService.class).versions(key);
         final View view = View.VERSIONS;
         return isWsError(result) ? viewable(view, new VersionsModel()) : viewable(view, new VersionsModel(result.getObject()));
@@ -88,13 +96,17 @@ public class ViewsController extends AbstractController {
     @GET
     @Path("projects/{key}/versions/{version}")
     public Viewable version(@PathParam("key") String key, @PathParam("version") String version) {
+        logger.trace("GET /projects/{}/versions/{}", key, version);
+
         final Ws.Result<IssuesSearch> result = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
-        return isWsError(result) ? viewable(View.ROADMAP, new RoadmapModel()) : viewable(View.ROADMAP, new RoadmapModel(version, result.getObject()));
+        final View view = View.ROADMAP;
+        return isWsError(result) ? viewable(view, new RoadmapModel()) : viewable(view, new RoadmapModel(version, result.getObject()));
     }
 
-    private boolean isWsError(Ws.Result<?> result) {
+    private boolean isWsError(final Ws.Result<?> result) {
         if (result.getStatusType().getStatusCode() != HttpStatus.OK_200) {
             final String errorMsg = MessageFormat.format("JIRA Web Service Communication Error : [{0}] [{1}]", result.getStatusType().getStatusCode(), result.getStatusType().getReasonPhrase());
+            logger.error(errorMsg);
             addMessage(errorMsg, Message.Type.DANGER);
             return true;
         } else {
