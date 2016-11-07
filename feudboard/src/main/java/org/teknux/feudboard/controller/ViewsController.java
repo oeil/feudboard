@@ -40,6 +40,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,11 +61,8 @@ public class ViewsController extends AbstractController {
     @Path("projects")
     public Viewable projects() {
         final Ws.Result<List<Project>> result = getServiceManager().getService(IWsService.class).projects();
-
-        if(result.getStatusType().getStatusCode() != HttpStatus.OK_200) {
-            addMessage("JIRA communication error : " + result.getStatusType().getReasonPhrase(), Message.Type.DANGER);
-            return viewable(View.PROJECTS, new ProjectsModel());
-        } else {
+        final View view = View.PROJECTS;
+        if (!isWsError(result)) {
             List<Project> projects = result.getObject();
 
             //do filter projects if needed
@@ -73,7 +71,9 @@ public class ViewsController extends AbstractController {
                 projects = result.getObject().stream().filter(p -> projectKeys.contains(p.getKey())).collect(Collectors.toList());
             }
 
-            return viewable(View.PROJECTS, new ProjectsModel(projects));
+            return viewable(view, new ProjectsModel(projects));
+        } else {
+            return viewable(view, new ProjectsModel());
         }
     }
 
@@ -81,25 +81,24 @@ public class ViewsController extends AbstractController {
     @Path("projects/{key}/versions")
     public Viewable versions(@PathParam("key") String key) {
         final Ws.Result<List<Version>> result = getServiceManager().getService(IWsService.class).versions(key);
-
-        if(result.getStatusType().getStatusCode() != HttpStatus.OK_200) {
-            addMessage("JIRA communication error : " + result.getStatusType().getReasonPhrase(), Message.Type.DANGER);
-            return viewable(View.VERSIONS, new VersionsModel());
-        } else {
-            return viewable(View.VERSIONS, new VersionsModel(result.getObject()));
-        }
+        final View view = View.VERSIONS;
+        return isWsError(result) ? viewable(view, new VersionsModel()) : viewable(view, new VersionsModel(result.getObject()));
     }
 
     @GET
     @Path("projects/{key}/versions/{version}")
     public Viewable version(@PathParam("key") String key, @PathParam("version") String version) {
         final Ws.Result<IssuesSearch> result = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
+        return isWsError(result) ? viewable(View.ROADMAP, new RoadmapModel()) : viewable(View.ROADMAP, new RoadmapModel(version, result.getObject()));
+    }
 
-        if(result.getStatusType().getStatusCode() != HttpStatus.OK_200) {
-            addMessage("JIRA communication error : " + result.getStatusType().getReasonPhrase(), Message.Type.DANGER);
-            return viewable(View.ROADMAP, new RoadmapModel());
+    private boolean isWsError(Ws.Result<?> result) {
+        if (result.getStatusType().getStatusCode() != HttpStatus.OK_200) {
+            final String errorMsg = MessageFormat.format("JIRA Web Service Communication Error : [{0}] [{1}]", result.getStatusType().getStatusCode(), result.getStatusType().getReasonPhrase());
+            addMessage(errorMsg, Message.Type.DANGER);
+            return true;
         } else {
-            return viewable(View.ROADMAP, new RoadmapModel(version, result.getObject()));
+            return false;
         }
     }
 }
