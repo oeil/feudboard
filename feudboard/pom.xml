@@ -65,8 +65,8 @@
 				</executions>
 			</plugin>
 
-			<!-- Embedded all dependencies -->
-			<plugin>
+			<!-- Embedded all dependencies (fat JAR) -->
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>${maven-shade.version}</version>
@@ -98,7 +98,68 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>-->
+
+			<!-- No Fat JAR, all dependencies in a directory named libs -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<outputDirectory>${basedir}/target/</outputDirectory>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>org.teknux.feudboard.Main</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Class-Path>.</Class-Path>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>${basedir}/target/lib/</outputDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- make the final zip file -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+					<formats><format>zip</format></formats>
+					<finalName>${project.name}</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
 		</plugins>
 
 		<resources>
@@ -183,11 +244,6 @@
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-mvc-freemarker</artifactId>
 			<version>${jersey.version}</version>
@@ -198,11 +254,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
 
 		<!-- Config -->
 		<dependency>
@@ -225,15 +287,16 @@
 		<maven-compiler.version>2.3.2</maven-compiler.version>
 		<maven-source.version>2.2.1</maven-source.version>
 		<maven-javadoc.version>2.9.1</maven-javadoc.version>
-		<maven-shade.version>2.2</maven-shade.version>
+		<maven-shade.version>2.4.3</maven-shade.version>
+		<maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
 
 		<junit.version>4.11</junit.version>
 		<mockito.version>1.9.5</mockito.version>
-		<jetty-bootstrap.version>1.0.3</jetty-bootstrap.version>
+		<jetty-bootstrap.version>1.0.9</jetty-bootstrap.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.13</logback.version>
 		<janino.version>2.6.1</janino.version>
-		<jersey.version>2.23.2</jersey.version>
+		<jersey.version>2.24</jersey.version>
 		<config-magic.version>0.17</config-magic.version>
 		<pegdown.version>1.6.0</pegdown.version>
 

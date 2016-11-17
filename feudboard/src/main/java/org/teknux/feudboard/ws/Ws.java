@@ -83,16 +83,27 @@ public class Ws {
             }
         }
 
-        Response response = build(path, clazz, params).path(path).request(MediaType.APPLICATION_JSON).get();
+        Response response = build(path, params).path(path).request(MediaType.APPLICATION_JSON).get();
+        return parse(response, clazz);
+    }
+
+    public <T> Result<T> doGet(String path, GenericType<T> clazz, Param ...params) {
+        synchronized (lock) {
+            if (webTarget == null) {
+                initialize();
+            }
+        }
+
+        Response response = build(path, params).path(path).request(MediaType.APPLICATION_JSON).get();
         return parse(response, clazz);
     }
 
     public <T> Result<List<T>> doGetList(String path, Class<T> clazz, Param ...params) {
-        Response response = build(path, clazz, params).request(MediaType.APPLICATION_JSON).get();
+        Response response = build(path, params).request(MediaType.APPLICATION_JSON).get();
         return parseList(response, clazz);
     }
 
-    private <T> WebTarget build(String path, Class<T> clazz, Param ...params) {
+    private <T> WebTarget build(String path, Param ...params) {
         synchronized (lock) {
             if (webTarget == null) {
                 initialize();
@@ -110,6 +121,14 @@ public class Ws {
     }
 
     private <T> Result<T> parse(Response response, Class<T> clazz) {
+        Response.StatusType status = response.getStatusInfo();
+        T object = response.readEntity(clazz);
+        response.close();
+
+        return new Result<T>(status, object);
+    }
+
+    private <T> Result<T> parse(Response response, GenericType<T> clazz) {
         Response.StatusType status = response.getStatusInfo();
         T object = response.readEntity(clazz);
         response.close();
@@ -141,7 +160,7 @@ public class Ws {
         List<T> object = response.readEntity(genericType);
         response.close();
 
-        return new Result<List<T>>(status, object);
+        return new Result<>(status, object);
     }
 
     public interface IWsCredentials {
@@ -149,7 +168,7 @@ public class Ws {
         String getPassword();
     }
 
-    public class Result<T> {
+    public static class Result<T> {
 
         private Response.StatusType statusType;
         private T object;

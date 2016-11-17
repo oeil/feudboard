@@ -122,7 +122,7 @@ public class Application {
         } catch (ConfigurationValidationException e) {
             logger.error("Configuration validation error", e);
             System.exit(EXIT_CODE_CONFIG_VALIDATION_ERROR);
-        } catch (ConfigurationException | IllegalArgumentException e) {
+        } catch (ConfigurationException | IllegalArgumentException | JettyBootstrapException e) {
             logger.error("Configuration file error", e);
             System.exit(EXIT_CODE_CONFIG_ERROR);
         }
@@ -175,7 +175,7 @@ public class Application {
     /**
      * Init Jetty Container
      */
-    protected void initServer() {
+    protected void initServer() throws JettyBootstrapException {
         JettyConfiguration jettyConfiguration = new JettyConfiguration();
         if (configuration.isSsl()) {
             jettyConfiguration.setJettyConnectors(JettyConnector.HTTPS);

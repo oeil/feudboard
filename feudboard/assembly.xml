@@ -1,0 +1,37 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+
+    <id>${project.name}-zip</id>
+    
+	<!-- Format and BaseDirectory are defined in pom.xml -->
+<!--     <formats> -->
+<!--         <format>zip</format> -->
+<!--     </formats> -->
+<!--     <baseDirectory>/${finalName}</baseDirectory> -->
+    <baseDirectory>${project.name}</baseDirectory>
+
+    <files>
+        <file>
+            <outputDirectory></outputDirectory>
+            <source>${project.build.directory}/${project.name}-${project.version}.jar</source>
+            <destName>${project.name}.jar</destName>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <outputDirectory></outputDirectory>
+            <source>${basedir}/src/main/resources/config.properties-dist</source>
+            <destName>config.properties</destName>
+            <filtered>true</filtered>
+        </file>
+    </files>
+    <fileSets>
+        <fileSet>
+            <directory>target/lib</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>
