@@ -18,6 +18,7 @@
 
 package org.teknux.feudboard.model.view;
 
+import org.teknux.feudboard.ws.model.Project;
 import org.teknux.feudboard.ws.model.Version;
 
 import java.util.List;
@@ -28,13 +29,15 @@ import java.util.List;
  */
 public class VersionsModel extends Model {
 
+    private Project project;
     private List<Version> versions;
 
     public VersionsModel() {
     }
 
-    public VersionsModel(List<Version> versions) {
+    public VersionsModel(Project project, List<Version> versions) {
         this();
+        this.project = project;
         this.versions = versions;
     }
 
@@ -44,5 +47,13 @@ public class VersionsModel extends Model {
 
     public void setVersions(List<Version> versions) {
         this.versions = versions;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

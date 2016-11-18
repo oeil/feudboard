@@ -36,6 +36,8 @@ public interface IWsService extends IService {
 
     Ws.Result<List<Project>> projects();
 
+    Ws.Result<Project> project(String projectKey);
+
     Ws.Result<List<Version>> versions(String projectKey);
 
 }

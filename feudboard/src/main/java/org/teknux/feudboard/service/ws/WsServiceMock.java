@@ -70,6 +70,27 @@ public class WsServiceMock implements IWsService {
     }
 
     @Override
+    public Ws.Result<Project> project(String projectKey) {
+        return new Ws.Result<Project>(new Response.StatusType() {
+
+            @Override
+            public int getStatusCode() {
+                return 200;
+            }
+
+            @Override
+            public Response.Status.Family getFamily() {
+                return null;
+            }
+
+            @Override
+            public String getReasonPhrase() {
+                return null;
+            }
+        }, null);
+    }
+
+    @Override
     public Ws.Result<List<Version>> versions(String projectKey) {
         return new Ws.Result<List<Version>>(new Response.StatusType() {
 

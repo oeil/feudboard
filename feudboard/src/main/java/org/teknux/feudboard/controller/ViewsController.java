@@ -88,9 +88,15 @@ public class ViewsController extends AbstractController {
     public Viewable versions(@PathParam("key") String key) {
         logger.trace("GET /projects/{}/versions", key);
 
-        final Ws.Result<List<Version>> result = getServiceManager().getService(IWsService.class).versions(key);
+        final Ws.Result<Project> projectResult = getServiceManager().getService(IWsService.class).project(key);
+        final Ws.Result<List<Version>> versionsResult = getServiceManager().getService(IWsService.class).versions(key);
         final View view = View.VERSIONS;
-        return isWsError(result) ? viewable(view, new VersionsModel()) : viewable(view, new VersionsModel(result.getObject()));
+        if (isWsError(projectResult) || isWsError(versionsResult)) {
+            //on ws error
+            return viewable(view, new VersionsModel());
+        }
+
+        return viewable(view, new VersionsModel(projectResult.getObject(), versionsResult.getObject()));
     }
 
     @GET
@@ -98,10 +104,16 @@ public class ViewsController extends AbstractController {
     public Viewable version(@PathParam("key") String key, @PathParam("version") String version) {
         logger.trace("GET /projects/{}/versions/{}", key, version);
 
-        final Ws.Result<IssuesSearch> result = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
+        final Ws.Result<Project> projectResult = getServiceManager().getService(IWsService.class).project(key);
+        final Ws.Result<IssuesSearch> issuesResult = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
 
         final View view = View.ROADMAP;
-        return isWsError(result) ? viewable(view, new RoadmapModel()) : viewable(view, new RoadmapModel(version, result.getObject()));
+        if (isWsError(projectResult) || isWsError(issuesResult)) {
+            //on ws error
+            return viewable(view, new RoadmapModel());
+        }
+
+        return viewable(view, new RoadmapModel(projectResult.getObject(), version, issuesResult.getObject()));
     }
 
     private boolean isWsError(final Ws.Result<?> result) {

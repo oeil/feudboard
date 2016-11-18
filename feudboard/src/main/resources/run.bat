@@ -1,2 +1,1 @@
-#!/bin/sh
-java -jar ${project.name}-${project.version}.jar
+java -jar %~dp0\${project.name}-${project.version}.jar

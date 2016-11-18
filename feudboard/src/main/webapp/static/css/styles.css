@@ -93,3 +93,9 @@ footer {
 .control-group {
     margin-bottom: 10px;
 }
+
+.breadcrumb {
+    background-color: #ffffff;
+    margin-bottom: 0px;
+    padding: 4px 15px;
+}

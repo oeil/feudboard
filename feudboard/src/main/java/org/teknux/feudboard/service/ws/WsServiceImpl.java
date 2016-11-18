@@ -100,6 +100,11 @@ public class WsServiceImpl implements IWsService {
     }
 
     @Override
+    public Ws.Result<Project> project(final String projectKey) {
+        return ws.doGet("project/" + projectKey, Project.class);
+    }
+
+    @Override
     public Ws.Result<List<Version>> versions(final String projectKey) {
         return ws.doGetList("project/" + projectKey + "/versions", Version.class);
     }

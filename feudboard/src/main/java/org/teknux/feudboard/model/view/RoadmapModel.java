@@ -19,6 +19,7 @@
 package org.teknux.feudboard.model.view;
 
 import org.teknux.feudboard.ws.model.IssuesSearch;
+import org.teknux.feudboard.ws.model.Project;
 
 
 /**
@@ -26,16 +27,26 @@ import org.teknux.feudboard.ws.model.IssuesSearch;
  */
 public class RoadmapModel extends Model {
 
+    private Project project;
     private String version;
     private IssuesSearch issuesSearch;
 
     public RoadmapModel() {
     }
 
-    public RoadmapModel(String version, IssuesSearch issuesSearch) {
+    public RoadmapModel(Project project, String version, IssuesSearch issuesSearch) {
         this();
+        this.project = project;
         this.version = version;
         this.issuesSearch = issuesSearch;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public String getVersion() {

@@ -20,6 +20,8 @@ package org.teknux.feudboard.ws;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.logging.LoggingFeature;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -83,18 +85,7 @@ public class Ws {
             }
         }
 
-        Response response = build(path, params).path(path).request(MediaType.APPLICATION_JSON).get();
-        return parse(response, clazz);
-    }
-
-    public <T> Result<T> doGet(String path, GenericType<T> clazz, Param ...params) {
-        synchronized (lock) {
-            if (webTarget == null) {
-                initialize();
-            }
-        }
-
-        Response response = build(path, params).path(path).request(MediaType.APPLICATION_JSON).get();
+        Response response = build(path, params).request(MediaType.APPLICATION_JSON).get();
         return parse(response, clazz);
     }
 

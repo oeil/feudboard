@@ -3,6 +3,12 @@
 <@layout.layout>
     <link href="${url("/static/css/roadmap.css")}" rel="stylesheet" type="text/css"/>
 
+    <ol class="breadcrumb">
+        <li><a href="${url("/projects")}">Projects</a></li>
+        <li ><a href="${url("/projects/${model.project.key}/versions")}">${model.project.name}</a></li>
+        <li class="active"><a href="${url("/projects/${model.project.key}/versions/${model.version}")}">${model.version}</a></li>
+    </ol>
+
     <div class="col-lg-12 text-center">
         <div class="roadmap-title">
             <#if model.version??>
