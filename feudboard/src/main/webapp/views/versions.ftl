@@ -24,10 +24,10 @@
     <div class="container">
         <#list model.versions?sort_by("releaseDate", "name")?reverse as version>
             <div class="panel panel-default project">
-                <div class="panel-body project">
+                <div class="panel-body project <#if version.released==true>version-done</#if> mark${version.mark}">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-ship fa-stack-1x fa-inverse"></i>
+                        <i class="fa <#if version.mark==6>fa-fire<#elseif version.released==true>fa-anchor<#else>fa-ship</#if> fa-stack-1x fa-inverse"></i>
                     </span>
                     <a href="${url("/projects/${version.projectId?c}/versions/${version.name}")}" <#if version.released==true>class="done version-done" </#if> >${version.name}</a>
                     <#if version.releaseDate?? && !version.isEpochReleaseDate() ><span> (${version.releaseDate?date})</span></#if>

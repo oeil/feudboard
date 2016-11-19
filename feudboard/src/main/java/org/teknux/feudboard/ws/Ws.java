@@ -20,8 +20,6 @@ package org.teknux.feudboard.ws;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.filter.LoggingFilter;
-import org.glassfish.jersey.logging.LoggingFeature;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -78,7 +76,7 @@ public class Ws {
         return parse(response, clazz);
     }
 
-    public <T> Result<T> doGet(String path, Class<T> clazz, Param ...params) {
+    public <T> Result<T> doGet(String path, Class<T> clazz, Param... params) {
         synchronized (lock) {
             if (webTarget == null) {
                 initialize();
@@ -89,12 +87,39 @@ public class Ws {
         return parse(response, clazz);
     }
 
-    public <T> Result<List<T>> doGetList(String path, Class<T> clazz, Param ...params) {
+    /*public Observable<Response> doGetAsync(String path, Param... params) {
+        synchronized (lock) {
+            if (webTarget == null) {
+                initialize();
+            }
+        }
+
+        return buildRx(path, params).request(MediaType.APPLICATION_JSON).rx().get();
+    }
+
+    private <T> RxWebTarget<RxObservableInvoker> buildRx(String path, Param... params) {
+        synchronized (lock) {
+            if (webTarget == null) {
+                initialize();
+            }
+        }
+
+        RxWebTarget<RxObservableInvoker> t = RxObservable.from(webTarget).path(path);
+        if (params != null) {
+            for (Param param : params) {
+                t = t.queryParam(param.getKey(), param.getValue());
+            }
+        }
+
+        return t;
+    }*/
+
+    public <T> Result<List<T>> doGetList(String path, Class<T> clazz, Param... params) {
         Response response = build(path, params).request(MediaType.APPLICATION_JSON).get();
         return parseList(response, clazz);
     }
 
-    private <T> WebTarget build(String path, Param ...params) {
+    private <T> WebTarget build(String path, Param... params) {
         synchronized (lock) {
             if (webTarget == null) {
                 initialize();
@@ -103,8 +128,8 @@ public class Ws {
 
         WebTarget t = webTarget.path(path);
         if (params != null) {
-            for(Param param : params) {
-                t= t.queryParam(param.getKey(), param.getValue());
+            for (Param param : params) {
+                t = t.queryParam(param.getKey(), param.getValue());
             }
         }
 
@@ -129,6 +154,7 @@ public class Ws {
 
     private <T> Result<List<T>> parseList(Response response, Class<T> clazz) {
         ParameterizedType parameterizedGenericType = new ParameterizedType() {
+
             public Type[] getActualTypeArguments() {
                 return new Type[] { clazz };
             }
@@ -142,8 +168,8 @@ public class Ws {
             }
         };
 
-        GenericType<List<T>> genericType = new GenericType<List<T>>(
-                parameterizedGenericType) {
+        GenericType<List<T>> genericType = new GenericType<List<T>>(parameterizedGenericType) {
+
         };
 
         // TODO: handle web service errors here!!! Maybe throw a dedicated exception...
@@ -155,7 +181,9 @@ public class Ws {
     }
 
     public interface IWsCredentials {
+
         String getUser();
+
         String getPassword();
     }
 

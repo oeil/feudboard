@@ -22,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.Instant;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 
@@ -65,6 +66,45 @@ public class Version {
 
     public boolean isEpochReleaseDate() {
         return Instant.EPOCH.equals(releaseDate.toInstant());
+    }
+
+    public int getMark() {
+        if (isEpochReleaseDate() || released == null) {
+            //none
+            return 0;
+        }
+
+        final LocalDate today = LocalDate.now();
+        final LocalDate nextMonth = LocalDate.now().plusMonths(1);
+        final LocalDate rDate = releaseDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (Boolean.TRUE.equals(released)) {
+            //released
+            return 1;
+        } else {
+            if (rDate.getMonthValue() == nextMonth.getMonthValue() && rDate.getYear() == nextMonth.getYear()) {
+                //release next month
+                return 2;
+            }
+
+            if (rDate.getMonthValue() == today.getMonthValue() && rDate.getYear() == today.getYear()) {
+                //release this month
+                return 3;
+            }
+
+            if (rDate.isEqual(today)) {
+                //release today
+                return 4;
+            }
+
+            if (rDate.isAfter(today)) {
+                //release in future
+                return 5;
+            }
+
+            //release already late
+            return 6;
+        }
     }
 
     public Boolean getReleased() {

@@ -51,6 +51,9 @@
     font-size: 14px;
     background-color: #f5f5f5;
 }
+.panel-body.project.version-done {
+    color: #919191;
+}
 
 .bug {
     color: deeppink;
@@ -70,5 +73,29 @@
 }
 
 a.done.version-done {
-    color: #474747;
+    color: #919191;
+    text-decoration: line-through;
+}
+
+
+.mark0 > a , .mark0 > span.fa-stack {
+    color: black;
+}
+.mark1 > a , .mark1 > span.fa-stack {
+    color: #919191;
+}
+.mark2 > a , .mark2 > span.fa-stack {
+    color: #07C0B9;
+}
+.mark3 > a , .mark3 > span.fa-stack {
+    color: deeppink;
+}
+.mark4 > a , .mark4 > span.fa-stack {
+    color: deeppink;
+}
+.mark5 > a , .mark5 > span.fa-stack {
+    color: #857fa7;
+}
+.mark6 > a , .mark6 > span.fa-stack {
+    color: #ff8809;
 }
