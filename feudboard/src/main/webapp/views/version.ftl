@@ -22,15 +22,15 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-xs-6 col-sm-4">
                     <#assign completion = (model.statistics.doneCount / model.statistics.totalCount) * 100>
                     <p class="text-left version-statistics">
                         Completion <span class="badge completion">${completion?string["0"]}%</span>
                     </p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-sm-8">
                     <p class="text-right version-statistics">
-                        Improvements <span class="badge improvements">${model.statistics.otherTypeCount}</span> Bugs <span class="badge bugs">${model.statistics.bugTypeCount}</span>
+                        Improvements <span class="badge improvements">${model.statistics.otherTypeCount}</span>  Bugs <span class="badge bugs">${model.statistics.bugTypeCount}</span>
                     </p>
                 </div>
             </div>
