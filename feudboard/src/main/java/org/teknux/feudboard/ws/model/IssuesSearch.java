@@ -158,6 +158,12 @@ public class IssuesSearch extends BaseSearch {
             @JsonIgnoreProperties(ignoreUnknown = true)
             public static class IssueType {
 
+                public static final String NAME_BUG = "bug";
+                public static final String NAME_STORY = "story";
+                public static final String NAME_TASK = "task";
+                public static final String NAME_IMPROVEMENT = "improvement";
+                public static final String NAME_NEW_FEATURE = "new feature";
+
                 private String name;
 
                 public String getName() {
@@ -194,6 +200,10 @@ public class IssuesSearch extends BaseSearch {
                  */
                 @JsonIgnoreProperties(ignoreUnknown = true)
                 public static class StatusCategory {
+
+                    public static final String KEY_NEW = "new";
+                    public static final String KEY_INDETERMINATE = "indeterminate";
+                    public static final String KEY_DONE = "done";
 
                     private String key;
 

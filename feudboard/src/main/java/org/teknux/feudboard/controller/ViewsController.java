@@ -25,8 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.teknux.feudboard.controller.constant.Route;
 import org.teknux.feudboard.freemarker.View;
 import org.teknux.feudboard.model.Message;
+import org.teknux.feudboard.model.view.IssueStatistics;
 import org.teknux.feudboard.model.view.ProjectsModel;
-import org.teknux.feudboard.model.view.RoadmapModel;
+import org.teknux.feudboard.model.view.VersionModel;
 import org.teknux.feudboard.model.view.VersionsModel;
 import org.teknux.feudboard.service.configuration.IConfigurationService;
 import org.teknux.feudboard.service.ws.IWsService;
@@ -107,13 +108,16 @@ public class ViewsController extends AbstractController {
         final Ws.Result<Project> projectResult = getServiceManager().getService(IWsService.class).project(key);
         final Ws.Result<IssuesSearch> issuesResult = getServiceManager().getService(IWsService.class).issuesByRelease(key, version);
 
-        final View view = View.ROADMAP;
+        final View view = View.VERSION;
         if (isWsError(projectResult) || isWsError(issuesResult)) {
             //on ws error
-            return viewable(view, new RoadmapModel());
+            return viewable(view, new VersionModel());
         }
 
-        return viewable(view, new RoadmapModel(projectResult.getObject(), version, issuesResult.getObject()));
+        IssueStatistics issueStatistics = new IssueStatistics();
+        issueStatistics.parse(issuesResult.getObject().getIssues());
+
+        return viewable(view, new VersionModel(projectResult.getObject(), version, issuesResult.getObject(), issueStatistics));
     }
 
     private boolean isWsError(final Ws.Result<?> result) {

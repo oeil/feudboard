@@ -1,7 +1,6 @@
 <#import "/views/layout/layout.ftl" as layout>
 
 <@layout.layout>
-<link href="${url("/static/css/roadmap.css")}" rel="stylesheet" type="text/css"/>
 
 <ol class="breadcrumb">
     <li><a href="${url("/projects")}">Projects</a></li>

@@ -1,7 +1,6 @@
 <#import "/views/layout/layout.ftl" as layout>
 
 <@layout.layout>
-    <link href="${url("/static/css/roadmap.css")}" rel="stylesheet" type="text/css"/>
 
     <ol class="breadcrumb">
         <li><a href="${url("/projects")}">Projects</a></li>
@@ -21,6 +20,20 @@
 
     <#if model.version??>
         <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <#assign completion = (model.statistics.doneCount / model.statistics.totalCount) * 100>
+                    <p class="text-left version-statistics">
+                        Completion <span class="badge completion">${completion?string["0"]}%</span>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-right version-statistics">
+                        Improvements <span class="badge improvements">${model.statistics.otherTypeCount}</span> Bugs <span class="badge bugs">${model.statistics.bugTypeCount}</span>
+                    </p>
+                </div>
+            </div>
 
                 <div class="panel-group roadmap" id="accordion-story" role="tablist" aria-multiselectable="true">
                     <#list model.issuesSearch.issues as issue>

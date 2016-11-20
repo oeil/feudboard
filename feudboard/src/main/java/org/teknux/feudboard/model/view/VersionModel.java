@@ -25,20 +25,22 @@ import org.teknux.feudboard.ws.model.Project;
 /**
  * @author Francois EYL
  */
-public class RoadmapModel extends Model {
+public class VersionModel extends Model {
 
     private Project project;
     private String version;
     private IssuesSearch issuesSearch;
+    private IssueStatistics statistics;
 
-    public RoadmapModel() {
+    public VersionModel() {
     }
 
-    public RoadmapModel(Project project, String version, IssuesSearch issuesSearch) {
+    public VersionModel(Project project, String version, IssuesSearch issuesSearch, IssueStatistics statistics) {
         this();
         this.project = project;
         this.version = version;
         this.issuesSearch = issuesSearch;
+        this.statistics = statistics;
     }
 
     public Project getProject() {
@@ -63,5 +65,13 @@ public class RoadmapModel extends Model {
 
     public void setIssuesSearch(IssuesSearch issuesSearch) {
         this.issuesSearch = issuesSearch;
+    }
+
+    public IssueStatistics getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(IssueStatistics statistics) {
+        this.statistics = statistics;
     }
 }

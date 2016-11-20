@@ -22,7 +22,7 @@ public enum View {
 
     PROJECTS("/projects"),
     VERSIONS("/versions"),
-    ROADMAP("/roadmap");
+    VERSION("/version");
 
     private String templateName;
 
