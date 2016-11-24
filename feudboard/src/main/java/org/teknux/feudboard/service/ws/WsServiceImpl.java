@@ -89,7 +89,7 @@ public class WsServiceImpl implements IWsService {
                 .build();
 
         jqlSearchQuery.fields = Arrays.asList(new String[] { "key", "summary", "description", "components", "issuetype", "status" });
-        jqlSearchQuery.maxResults = 9999;
+        jqlSearchQuery.maxResults = 500;
 
         return ws.doPost("search", jqlSearchQuery, IssuesSearch.class);
     }
